@@ -3,7 +3,7 @@
 import { useEffect, useState } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, Legend, ResponsiveContainer, CartesianGrid } from "recharts";
 
-const REFRESH_DELAY = 100;
+const REFRESH_DELAY = 1000;
 
 export default function BudgetComparisonChart({ refresh }) {
   const [budgets, setBudgets] = useState([]);
