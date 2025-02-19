@@ -64,7 +64,7 @@ export default function DashboardSummary() {
     const intervalId = setInterval(() => {
       fetchTransactions();
       fetchBudgets();
-    }, 100); 
+    }, 1000); 
 
     return () => clearInterval(intervalId);
   }, [fetchTransactions, fetchBudgets]);
