@@ -4,7 +4,7 @@ import { useEffect, useState, useCallback } from "react";
 import { BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid, Legend } from "recharts";
 import { PieChart, Pie, Cell } from "recharts";
 
-const REFRESH_DELAY = 100;
+const REFRESH_DELAY = 1000;
 
 export default function Charts({ refresh }) {
   const [chartType, setChartType] = useState("bar"); // Default: Bar Chart
