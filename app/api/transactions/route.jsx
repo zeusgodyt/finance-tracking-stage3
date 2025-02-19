@@ -1,22 +1,16 @@
-import { connectToDatabase } from "@/lib/mongodb";
+import { connectDB } from "@/lib/mongodb";
 import Transaction from "@/models/Transaction";
 import { NextResponse } from "next/server";
 
 // GET: Fetch transactions
 export async function GET() {
   try {
-    await connectToDatabase();
+    await connectDB(); // Ensure DB connection
     const transactions = await Transaction.find({});
-
-
-    const normalizedTransactions = transactions.map((txn) => ({
-      ...txn._doc,
-      category: txn.category.trim(),
-    }));
-
-    return NextResponse.json(normalizedTransactions, { status: 200 });
+    return NextResponse.json(transactions, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch transactions" }, { status: 500 });
+    console.error("❌ API Error: ", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
 
@@ -37,7 +31,7 @@ export async function POST(req) {
       return NextResponse.json({ error: "Invalid category" }, { status: 400 });
     }
 
-    await connectToDatabase();
+    await connectDB();
     const newTransaction = await Transaction.create({ amount, description, date, category });
 
     return NextResponse.json(newTransaction, { status: 201 });

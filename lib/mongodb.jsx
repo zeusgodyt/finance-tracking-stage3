@@ -6,23 +6,24 @@ if (!MONGODB_URI) {
   throw new Error("MONGODB_URI is not defined in environment variables.");
 }
 
-let cached = global.mongoose || { conn: null, promise: null };
+let isConnected = false;
 
-export async function connectToDatabase() {
-  if (cached.conn) return cached.conn; 
-
-  if (!cached.promise) {
-    cached.promise = mongoose.connect(MONGODB_URI, {
-      useNewUrlParser: true,
-      useUnifiedTopology: true,
-    }).then((mongoose) => {
-      console.log("MongoDB connected");
-      return mongoose;
-    });
+export const connectDB = async () => {
+  if (isConnected) {
+    console.log("✅ Already connected to MongoDB");
+    return;
   }
 
-  cached.conn = await cached.promise;
-  return cached.conn;
-}
+  try {
+    const db = await mongoose.connect(MONGODB_URI, {
+      useNewUrlParser: true,
+      useUnifiedTopology: true,
+    });
 
-global.mongoose = cached;
+    isConnected = true;
+    console.log("✅ Connected to MongoDB");
+  } catch (error) {
+    console.error("❌ MongoDB connection failed:", error);
+    throw error;
+  }
+};

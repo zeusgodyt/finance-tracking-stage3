@@ -1,11 +1,11 @@
 import { NextResponse } from "next/server";
-import { connectToDatabase } from "@/lib/mongodb";
+import { connectDB } from "@/lib/mongodb";
 import Transaction from "@/models/Transaction";
 
 // PUT: Update a transaction
 export async function PUT(request, context) {
   try {
-    await connectToDatabase();
+    await connectDB();
     
     const id = context.params.id;
     const body = await request.json();
@@ -47,7 +47,7 @@ export async function PUT(request, context) {
 // DELETE: Delete a transaction
 export async function DELETE(request, context) {
   try {
-    await connectToDatabase();
+    await connectDB();
     
     const id = context.params.id;
 

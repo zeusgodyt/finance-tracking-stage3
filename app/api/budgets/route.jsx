@@ -1,24 +1,19 @@
-import { connectToDatabase } from "@/lib/mongodb";
+import { connectDB } from "@/lib/mongodb";
 import Budget from "@/models/Budget";
 import { NextResponse } from "next/server";
 
 // GET: Fetch all budgets
 export async function GET() {
   try {
-    await connectToDatabase();
+    await connectDB(); // Ensure DB connection
     const budgets = await Budget.find({});
-
-    // Normalize category names
-    const normalizedBudgets = budgets.map((budget) => ({
-      ...budget._doc,
-      category: budget.category.trim(), // Trim category names
-    }));
-
-    return NextResponse.json(normalizedBudgets, { status: 200 });
+    return NextResponse.json(budgets, { status: 200 });
   } catch (error) {
-    return NextResponse.json({ error: "Failed to fetch budgets" }, { status: 500 });
+    console.error("❌ API Error: ", error);
+    return NextResponse.json({ error: "Internal Server Error" }, { status: 500 });
   }
 }
+
 
 
 // POST: Add or update a budget
@@ -29,7 +24,7 @@ export async function POST(req) {
       return NextResponse.json({ error: "All fields are required" }, { status: 400 });
     }
 
-    await connectToDatabase();
+    await connectDB();
     let budget = await Budget.findOne({ category, month });
 
     if (budget) {
@@ -58,7 +53,7 @@ export async function DELETE(req) {
       return NextResponse.json({ error: "Month parameter is required" }, { status: 400 });
     }
 
-    await connectToDatabase();
+    await connectDB();
     console.log("✅ Connected to MongoDB");
 
     // Fetch existing budgets for debugging
