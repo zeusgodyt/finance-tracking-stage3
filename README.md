@@ -55,4 +55,8 @@ Follow these steps to get the app running on your local machine:
    ```
 6. Open [http://localhost:3000](http://localhost:3000) in your browser to explore the app.
 
+## Performance Considerations
 
+The app is deployed using MongoDB Atlas (Free Tier) and Vercel.
+Due to the free-tier limitations, there may be occasional delays in fetching data, especially when the database enters an idle state.
+However, overall performance remains stable, and the app works perfectly once the connection is established.
